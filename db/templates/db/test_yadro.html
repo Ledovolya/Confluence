@@ -1,0 +1,190 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <title> {% block title %}{% endblock %}&ndash; БЭРИ </title>
+        <link href="{% static "db/style.css" %}" rel="stylesheet">
+        <script src="{% static 'db/jquery.min.js' %}"></script>
+    </head>
+
+    <body>
+        <div id="" class="container">
+            <div id="id_area" class="main_area"> <!-- style="background-color: rgb(201, 201, 201);" -->
+                <div id="id_head" class="bugs main_head">
+                    <div class="bugs main_head_line block-left">
+                        <div class="bugs main_head_line_cell width-100 text-center font_head">Новая страница в пространстве</div>
+                    </div>
+                </div>
+        
+                <div id="id_content" class="bugs main_content" style="background-color: rgb(185, 255, 190);">
+                <form id="id_form" action="/test_yadro/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-20 text-left font_content" style="height: 40px; padding-top: 10px;">
+                            Имя пользователя
+                        </div>
+                        <div class="bugs main_content_line_cell block-left width-80">
+                            <input type="text" class="form-control" id="id_user" name="user" value="Ivan">
+                        </div>
+                    </div>
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-20 text-left font_content" style="height: 40px; padding-top: 10px;">
+                            Пароль
+                        </div>
+                        <div class="bugs main_content_line_cell block-left width-80">
+                            <input type="text" class="form-control" id="id_password" name="password" value="123456">
+                        </div>
+                    </div>
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-20 text-left font_content" style="height: 40px; padding-top: 10px;">
+                            Название пространства
+                        </div>
+                        <div class="bugs main_content_line_cell block-left width-80">
+                            <input type="text" class="form-control" id="id_space" name="space" value="work space">
+                        </div>
+                    </div>
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-20 text-left font_content" style="height: 40px; padding-top: 10px;">
+                            Заголовок документа
+                        </div>
+                        <div class="bugs main_content_line_cell block-left width-80">
+                            <input type="text" class="form-control" id="id_title" name="title" value="work task 1">
+                        </div>
+                        </div>
+                    </div>
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-20 text-left font_content" style="height: 40px; padding-top: 10px;">
+                            Тело документа
+                        </div>
+                        <div class="bugs main_content_line_cell block-left width-100">
+                            <textarea id="id_text" style="width: 100%; height: 200px; overflow: scroll;" name="text"><p>тут текст</p></textarea>
+                        </div>
+                        <div id="id_body" class="bugs main_content_line_cell block-left width-100">
+                        </div>
+                    </div>
+                    <input hidden type="text" class="form-control" id="id_command" name="command" value="">
+                    <input hidden type="text" class="form-control" id="id_id" name="id" value="">
+                </form>
+        
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-100">
+                            <button onclick="create_page()" class="btn btn-primary" style="float:left ; width: 50%; height: 40px; margin: 0% 25%;" >
+                                Создать
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bugs main_content_line block-left">
+                        <div class="bugs main_content_line_cell block-left width-100">
+                            <button onclick="get_page()" class="btn btn-primary" style="float:left ; width: 50%; height: 40px; margin: 0% 25%;" >
+                                Загрузить
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+     
+            function create_page(){
+                console.log('----- create_page -----')
+                let error = []
+                if ($('#id_user').val().length < 1){
+                    error.push("Имя слишком короткое") }
+                if ($('#id_password').val().length < 1){
+                    error.push("Пароль слишком короткий") }
+                if ($('#id_space').val().length < 1){
+                    error.push("Название пространства слишком короткое") }
+                if ($('#id_title').val().length < 1){
+                    error.push("Заголовок документа слишком короткий") }
+                if ($('#id_text').val().length < 1){
+                    error.push("Текст документа слишком короткий") }
+                if ( error.length > 0 ) {
+                    alert(error)
+                } else {
+                    manager_submit_Form('create_page')
+                }
+            }
+
+            function get_page(){
+                console.log('----- get_page -----')
+                let error = []
+                if ($('#id_user').val().length < 1){
+                    error.push("Имя слишком короткое") }
+                if ($('#id_password').val().length < 1){
+                    error.push("Пароль слишком короткий") }
+                if ($('#id_space').val().length < 1){
+                    error.push("Название пространства слишком короткое") }
+                // if ($('#id_title').val().length < 1){
+                //     error.push("Заголовок документа слишком короткий") }
+                // if ($('#id_text').val().length < 1){
+                //     error.push("Текст документа слишком короткий") }
+                if ( error.length > 0 ) {
+                    alert(error)
+                } else {
+                    let page_id = prompt('id страницы', '')
+                    manager_submit_Form('get_page', page_id)
+                }
+            }
+
+            function build_page(){
+                console.log('----- build_page -----', page_data)
+                if (page_data != undefined && page_data != {}) {
+                    // $('#id_user').val(page_data['user'])
+                    // $('#id_password').val(page_data['password'])
+                    $('#id_space').val(page_data['space'])
+                    $('#id_title').val(page_data['title'])
+                    $('#id_text').hide()
+                    $('#id_body').empty()
+                    $('#id_body').append(page_data['body'])
+                }
+            }
+
+            /* Обмен с сервером */
+            let page_data
+            function submit_Form(event){
+                console.log('----- submit_Form -----')
+                event.preventDefault();
+                let data = new FormData($(this).get(0)) // console.log("boardRevision:", data.get("boardRevision"))
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    data: data,
+                    cache: false, 
+                    processData: false,
+                    contentType: false,
+                    success: function (obj_answer_data) {
+                        console.log('- answer:', obj_answer_data)
+                        if (obj_answer_data != false) {
+                            if (obj_answer_data != null){
+                                if ($('#id_command').val() == "create_page"){
+                                    alert('id: ' + obj_answer_data)
+                                } else if ($('#id_command').val() == "get_page"){
+                                    page_data = JSON.parse(obj_answer_data)
+                                    build_page()
+                                }
+                            }
+                        }
+                    },
+                    error: function(){
+                        console.log('- answer false')
+                    }
+                })
+            }
+            $('#id_form').submit(submit_Form)
+            function manager_submit_Form(command, data=""){
+                console.log("-----  manager_submit_Form -----", command, data)
+                if (command == "create_page"){
+                    $('#id_command').val( command )
+                    $('#id_form').submit()
+                }
+                if (command == "get_page"){
+                    $('#id_command').val( command )
+                    $('#id_id').val(data)
+                    $('#id_form').submit()
+                }
+            }
+        </script>
+    </body>
+</html>
